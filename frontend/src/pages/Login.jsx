@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Leaf, Eye, EyeOff, Loader2 } from "lucide-react";
+import { Leaf, Loader2 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
@@ -10,21 +10,19 @@ const CHEF_PHOTO = "https://customer-assets-7cd3h4nn.emergentagent.net/job_felin
 
 export default function Login({ onLogin }) {
   const [usuario, setUsuario] = useState("");
-  const [senha, setSenha] = useState("");
-  const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState("");
 
   const submit = async (e) => {
     e.preventDefault();
     setErro("");
-    if (!usuario.trim() || !senha.trim()) {
-      setErro("Preencha seu nome e uma senha para continuar.");
+    if (!usuario.trim()) {
+      setErro("Digite seu nome para continuar.");
       return;
     }
     setLoading(true);
     try {
-      const { data } = await api.post("/login", { usuario, senha });
+      const { data } = await api.post("/login", { usuario, senha: "acesso" });
       onLogin(data);
     } catch (err) {
       setErro("Não foi possível entrar. Tente novamente.");
@@ -73,30 +71,6 @@ export default function Login({ onLogin }) {
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="senha" className="text-[#1E2A24] font-medium">Senha</Label>
-            <div className="relative">
-              <Input
-                id="senha"
-                data-testid="login-password-input"
-                type={showPass ? "text" : "password"}
-                value={senha}
-                onChange={(e) => setSenha(e.target.value)}
-                placeholder="••••••••"
-                className="h-12 rounded-xl border-[#E2DDD5] bg-white pr-11 focus-visible:ring-[#2D5A47]"
-              />
-              <button
-                type="button"
-                data-testid="toggle-password-btn"
-                onClick={() => setShowPass((s) => !s)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#5C6B62] hover:text-[#2D5A47]"
-                aria-label="Mostrar senha"
-              >
-                {showPass ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-              </button>
-            </div>
-          </div>
-
           {erro && (
             <p data-testid="login-error" className="text-sm text-[#B91C1C] bg-[#FEF2F2] rounded-lg px-3 py-2">
               {erro}
@@ -112,10 +86,6 @@ export default function Login({ onLogin }) {
             {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Entrar"}
           </Button>
         </form>
-
-        <p className="mt-8 text-center text-xs text-[#8A9389]">
-          Conteúdo educativo — não substitui orientação veterinária.
-        </p>
       </motion.div>
     </div>
   );
