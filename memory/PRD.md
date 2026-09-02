@@ -31,9 +31,11 @@ Aplicação web (pt-BR) para tutores acessarem receitas naturais para pets, come
 - Botão Sair. Responsivo (mobile/tablet/desktop).
 - Testado: backend 30/30; frontend E2E aprovado (issues corrigidos: overlap do botão favorito no modal, coerência favoritos x filtros, DialogTitle a11y).
 
-## CONTEÚDO — PENDÊNCIA IMPORTANTE
-- As receitas atuais são um CONJUNTO DE EXEMPLO (36 receitas: 32 gatos + 4 cães) com estrutura completa em pt-BR, pois os 3 PDFs do usuário NÃO chegaram ao sistema (usuário tentou anexar 2x).
-- Ao receber os PDFs: extrair e substituir o conteúdo em /app/backend/recipes_data.py mantendo os mesmos campos. Meta: 50 principais + 50 petiscos (gatos), 3–5 amostras (cães).
+## CONTEÚDO — REAL (dos PDFs do tutor)
+- 2026-06: Extraídos 4 PDFs e estruturadas 200 receitas reais em /app/backend/recipes_data.py:
+  - Gatos: 50 receitas principais + 50 petiscos.
+  - Cães: 50 receitas principais + 50 petiscos.
+- Avisos (Regras de Ouro + Alimentos Proibidos) atualizados com o conteúdo oficial dos PDFs.
 
 ## Backlog / Próximos
 - P0: Substituir receitas de exemplo pelo conteúdo real dos PDFs (50+50 gatos).
