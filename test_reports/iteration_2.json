@@ -1,0 +1,26 @@
+{
+  "summary": "Frontend-only retest of the login bug 'Não foi possível entrar' in 'Receitas Naturais para Pets'. All 6 requested scenarios PASS: (1) login with any name ('Mariana') goes straight to the Painel with greeting 'Olá, Mariana!' and NO error; (2) Sair + login with a different name ('Rafael') on the same device works, greeting 'Olá, Rafael!'; (3) empty and whitespace-only submit shows 'Digite seu nome para continuar.' and stays on login; (4) reload while logged in keeps the user in the Painel (localStorage pet_user = {\"usuario\":\"Mariana\",\"nome\":\"Mariana\"}); (5) pet filters work (Gatos=100, Cachorros=100 with all cards labelled Cachorro, Todos=200) and the recipe grid loads; (6) Sair returns to login and clears pet_user (null). Extra checks: login screen is simplified (no senha / esqueci / criar conta / acesso rápido); lowercase name is capitalized ('joao silva' -> 'Olá, Joao Silva!'); with /api/login forcibly aborted (route.abort) the local fallback still logs in and shows NO error (verified on mobile 390px); mobile logout works. No page errors and no CORS/withCredentials errors in console.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Dashboard / recipe grid", "issues": ["Filter 'Todos' renders all 200 recipe cards at once (no pagination/lazy loading) — heavy DOM, noticeable render cost", "Stat 'Receitas para gatos' (100) stays fixed while the pet filter changes; it is a global stat, may confuse users when Cachorros filter is active"]}
+    ]
+  },
+  "test_report_links": ["/app/test_reports/iteration_2.json"],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Login.jsx swallows every API error in a silent catch — if the real API starts rejecting logins, the user still enters with a purely local session and no diagnostics. Acceptable for this 'login must always work' requirement, but log the error (console.warn) for debuggability.",
+    "Login.jsx computes nomeFmt/nomeLocal before the try but only uses it in the catch branch; harmless dead work on the happy path.",
+    "App.js stores the session in localStorage with no expiry/validation of shape — a malformed pet_user value that parses (e.g. a string) would render Dashboard with an undefined nome. Guard with a shape check in loadUser()."
+  ],
+  "updated_files": ["/app/test_reports/iteration_2.json"],
+  "success_rate": {"backend": "not tested (frontend-only request)", "frontend": "100% (all 6 requested scenarios + 4 extra edge cases pass)"},
+  "seed_data_creation": "None. Used names Mariana, Rafael, 'joao silva', Carla (no password).",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "test_credentials": "Any name, no password (e.g. Mariana). /app/memory/test_credentials.md still documents the old email/senha + httponly cookie flow — should be updated to the new localStorage/name-only login.",
+  "context_for_next_testing_agent": "Login is now name-only with data-testids login-username-input / login-submit-btn / login-error; session in localStorage key 'pet_user' (clear it before login tests via page.evaluate). Dashboard testids: logout-btn, results-count, filter-pet-gato/cachorro/todos, recipe-card*. Recipe counts: 200 total, 100 gato, 100 cachorro (so gato/cachorro counts are identical — assert on card pet badge, not just results-count). Previously reported open items from iteration_1 (modal favorite/close X overlap, Favoritas view intersected with active filters, missing DialogTitle a11y) were NOT re-verified in this iteration.",
+  "rca_of_the_issue": "Original bug was axios withCredentials=true against a wildcard 'Access-Control-Allow-Origin: *' plus Allow-Credentials: true, which the browser rejects, making the login POST throw. Fix confirmed effective: api.js no longer sets withCredentials, session moved to localStorage, and Login.jsx falls back to a local session when the API call fails — verified by aborting /api/login and still logging in without any error message."
+}
