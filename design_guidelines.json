@@ -1,0 +1,111 @@
+{
+  "app_identity": {
+    "name": "Receitas Naturais para Pets",
+    "tagline": "Alimentação Biologicamente Adequada & Nutrição Natural para Gatos e Cães",
+    "language": "pt-BR",
+    "archetype": "Organic & Earthy (Confiança, Saúde Animal & Calma)",
+    "context": "Web Dashboard Responsivo (Desktop, Tablet, Mobile) com Autenticação Simulada por Cookie e Servido via FastAPI"
+  },
+  "design_system": {
+    "colors": {
+      "primary_green": "#2D5A47",
+      "primary_green_hover": "#244939",
+      "primary_green_light": "#E8F0EC",
+      "warm_background": "#FAF6EE",
+      "card_background": "#FFFFFF",
+      "soft_cream": "#F4EFE6",
+      "terracotta_accent": "#D96B43",
+      "terracotta_hover": "#C25933",
+      "warm_amber": "#E6A148",
+      "sage_badge": "#D2E3D8",
+      "text_dark": "#1E2A24",
+      "text_muted": "#5C6B62",
+      "border_subtle": "#E2DDD5",
+      "danger_red": "#DC2626",
+      "danger_bg": "#FEF2F2",
+      "warning_yellow": "#F59E0B",
+      "forbidden_food_red": "#B91C1C"
+    },
+    "typography": {
+      "headline_font": "Fraunces, serif (ou Playfair Display)",
+      "body_font": "Plus Jakarta Sans, sans-serif (ou Outfit)",
+      "mono_font": "JetBrains Mono, monospace",
+      "hierarchy": {
+        "h1": "text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#1E2A24]",
+        "h2": "text-2xl sm:text-3xl font-bold tracking-tight text-[#1E2A24]",
+        "h3": "text-xl sm:text-2xl font-semibold text-[#1E2A24]",
+        "h4": "text-lg font-medium text-[#1E2A24]",
+        "body_lg": "text-lg leading-relaxed text-[#5C6B62]",
+        "body_base": "text-base leading-relaxed text-[#1E2A24]",
+        "body_sm": "text-sm text-[#5C6B62]",
+        "caption": "text-xs font-semibold uppercase tracking-wider text-[#5C6B62]"
+      }
+    },
+    "spacing_and_layout": {
+      "container_padding": "px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto",
+      "card_internal_padding": "p-6 sm:p-8",
+      "grid_gap": "gap-6 lg:gap-8",
+      "border_radius": "rounded-2xl",
+      "button_radius": "rounded-full",
+      "shadow_subtle": "shadow-[0_4px_20px_-4px_rgba(45,90,71,0.08)]",
+      "shadow_hover": "shadow-[0_12px_30px_-6px_rgba(45,90,71,0.15)] translate-y-[-2px]"
+    }
+  },
+  "key_features_and_ux_flow": {
+    "1_auth_flow": {
+      "title": "Autenticação Simulada (Cookie Based)",
+      "details": "Tela de login elegante e calorosa com ilustração natural, campos de usuário/senha, botão 'Entrar', links estáticos para 'Esqueci minha senha' e 'Criar conta', além de botões de login rápido (Ex: 'Tutor da Mia 🐾', 'Tutor do Max 🐕'). Persiste estado via Cookie (FastAPI endpoint `/api/login` + `/api/me`)."
+    },
+    "2_dashboard_welcome": {
+      "title": "Painel Principal & Boas-Vindas Personalizadas",
+      "details": "Header sticky com vidro fosco (backdrop-blur-md bg-[#FAF6EE]/80), saudação personalizada 'Olá, [Nome]! 🌿', resumo estatístico do pet (Favoritos salvos, receitas concluídas hoje, dica nutricional do dia) e botão 'Sair'."
+    },
+    "3_filtering_and_search": {
+      "title": "Barra de Filtros Multicritério",
+      "details": "Filtros interativos no topo com badges pílula: Pet (🐱 Gatos [Ativo] / 🐶 Cachorros [Em breve/Selecionável]), Dificuldade (Todos, Fácil 🟢, Médio 🟡, Avançado 🔴), Tipo de Refeição (Todas, Refeição Principal 🍛, Petiscos & Snacks 🦴, Caldos & Hidratação 🥣) e Busca por Ingrediente ou Benefício."
+    },
+    "4_recipe_grid_cards": {
+      "title": "Grid de Cards de Receita",
+      "details": "Grid assimétrico e responsivo (1 col mobile, 2 col tablet, 3 col desktop) com cards ricos contendo: Imagem real, Tag de Dificuldade, Tag de Pet, Tempo de Preparo, Benefício Chave (ex: 'Saúde Renal & Trato Urinário'), Botão Favorito com animação de coração, e Botão 'Ver Receita Completa'."
+    },
+    "5_recipe_detail_modal": {
+      "title": "Modal Completo da Receita",
+      "details": "Modal acessível e envolvente com tabs ou seções claras: (a) Visão Geral & Benefícios Nutricionais; (b) Calculadora de Porções (ajuste de gramas conforme peso do gato/cão); (c) Lista de Ingredientes com checkbox de preparo; (d) Modo de Preparo passo a passo; (e) Indicação Veterinária; (f) Destaque de ALERTA: 'Regras de Ouro e Alimentos Proibidos' (ex: Cebola, Alho, Chocolate, Uvas, Ossos cozidos)."
+    },
+    "6_favorites_system": {
+      "title": "Favoritos Persistentes",
+      "details": "Aba ou filtro rápido 'Minhas Salvas ❤️' persistido em Cookie/localStorage com contador em tempo real na barra de navegação."
+    },
+    "7_premium_products": {
+      "title": "Seção 'Produtos Premium' (3 Cards)",
+      "details": "Cards com visual exclusivo de produto natural para pets (E-books de Dietas Cruas, Suplementação Natural de Taurina/Ômega 3, Kit de Formas & Medidores de Porção). Botão 'Saiba Mais' abre modal/drawer interativo display-only com detalhes do produto."
+    }
+  },
+  "image_urls": {
+    "cat_natural_meal_1": "https://images.unsplash.com/photo-1610080556749-7c63c435a8cf?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2ODh8MHwxfHNlYXJjaHw0fHxjdXRlJTIwY2F0JTIwZWF0aW5nJTIwbmF0dXJhbCUyMGZvb2QlMjBwZXQlMjBvcmdhbmljfGVufDB8fHx8MTc4ODM2NjE3MXww&ixlib=rb-4.1.0&q=85",
+    "cat_natural_meal_2": "https://images.unsplash.com/photo-1609284568429-b73c7ea66d71?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2ODh8MHwxfHNlYXJjaHwxfHxjdXRlJTIwY2F0JTIwZWF0aW5nJTIwbmF0dXJhbCUyMGZvb2QlMjBwZXQlMjBvcmdhbmljfGVufDB8fHx8MTc4ODM2NjE3MXww&ixlib=rb-4.1.0&q=85",
+    "cat_eating_bowl": "https://images.unsplash.com/photo-1764576504536-dbdfa4cb1d9a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2ODh8MHwxfHNlYXJjaHwyfHxjdXRlJTIwY2F0JTIwZWF0aW5nJTIwbmF0dXJhbCUyMGZvb2QlMjBwZXQlMjBvcmdhbmljfGVufDB8fHx8MTc4ODM2NjE3MXww&ixlib=rb-4.1.0&q=85",
+    "cat_treat_hand": "https://images.unsplash.com/photo-1781497181976-6670e358172d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDF8MHwxfHNlYXJjaHwzfHxoYXBweSUyMGNhdCUyMG93bmVyJTIwZmVlZGluZyUyMHBldCUyMGhvbWV8ZW58MHx8fHwxNzg4MzY2MTgxfDA&ixlib=rb-4.1.0&q=85",
+    "dog_raw_food": "https://images.unsplash.com/photo-1745252798506-29500efc5b39?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzh8MHwxfHNlYXJjaHwxfHxmcmVzaCUyMGhlYWx0aHklMjByYXclMjBwZXQlMjBmb29kJTIwaW5ncmVkaWVudHMlMjBib3dsfGVufDB8fHx8MTc4ODM2NjE4MXww&ixlib=rb-4.1.0&q=85",
+    "fresh_ingredients": "https://images.unsplash.com/photo-1739595415308-ba632ebfbfe2?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzh8MHwxfHNlYXJjaHwzfHxmcmVzaCUyMGhlYWx0aHklMjByYXclMjBwZXQlMjBmb29kJTIwaW5ncmVkaWVudHMlMjBib3dsfGVufDB8fHx8MTc4ODM2NjE4MXww&ixlib=rb-4.1.0&q=85"
+  },
+  "instructions_to_main_agent": [
+    "Certifique-se de que o backend FastAPI sirva o JSON estático das receitas e gerencie o cookie de sessão do tutor em /api/login, /api/logout e /api/me.",
+    "Implemente a interface em pt-BR com visual impecável, quente e orgânico no padrão 'Organic & Earthy' (tons de verde sálvia #2D5A47, bege cremoso #FAF6EE e terracota #D96B43).",
+    "Adicione data-testid em TODOS os botões, inputs, cards, filtros e modais (ex: data-testid='login-username-input', data-testid='recipe-card-1', data-testid='filter-pet-cats', data-testid='favorite-btn-1', data-testid='modal-recipe-detail').",
+    "O modal de receitas DEVE conter a seção destacada 'Regras de Ouro e Alimentos Proibidos' com avisos claros contra Cebola, Alho, Chocolate, Uvas, Tomate cru e Ossos Cozidos.",
+    "Inclua 3 cards na seção de Produtos Premium com botões 'Saiba Mais' interativos que abrem um modal com detalhes do produto.",
+    "Ganta suporte responsivo total (Mobile, Tablet, Desktop) e scroll suave."
+  ],
+  "UNIVERSAL GUIDELINES FOR MAIN AGENT": [
+    "Dark colors look good when used independently without gradients. DO NOT use dark colors as gradients.",
+    "Don't make generic centered layouts, simplistic gradients, and uniform styling.",
+    "Create depth through layered design elements with z-index hierarchy.",
+    "Use glass-morphism effects with backdrop filters (12-24px blur).",
+    "You MUST NOT apply universal transition. Eg: transition: all.",
+    "You MUST NOT center align the app container, ie do not add .App { text-align: center; } in the css file.",
+    "Always use modern button styles like pill-shaped, or sharp button with interaction animations & color relevant to the app style.",
+    "NEVER use AI assistant Emoji characters like 🤖🧠💭💡🔮🎯 for system icons (use Lucide React icons instead).",
+    "All interactive and key informational elements MUST include a data-testid attribute."
+  ]
+}
