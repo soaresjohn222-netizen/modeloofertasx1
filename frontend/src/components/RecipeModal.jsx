@@ -3,7 +3,7 @@ import { Heart, Clock, Users, Leaf, ShieldAlert, Ban, CheckCircle2, Loader2, Lig
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "./ui/dialog";
 import { recipeImage } from "../lib/images";
 import { DIFICULDADE, PET, REFEICAO } from "../lib/labels";
-import api from "../lib/api";
+import { getRecipe } from "../lib/recipesLocal";
 
 function Section({ icon: Icon, title, children }) {
   return (
@@ -22,11 +22,8 @@ export default function RecipeModal({ recipeId, open, onClose, favorite, onToggl
 
   useEffect(() => {
     if (!recipeId || !open) return;
-    setLoading(true);
-    setRecipe(null);
-    api.get(`/recipes/${recipeId}`)
-      .then(({ data }) => setRecipe(data))
-      .finally(() => setLoading(false));
+    setLoading(false);
+    setRecipe(getRecipe(recipeId));
   }, [recipeId, open]);
 
   const dif = recipe ? DIFICULDADE[recipe.dificuldade] : null;

@@ -6,8 +6,11 @@ import Filters from "../components/Filters";
 import RecipeCard from "../components/RecipeCard";
 import RecipeModal from "../components/RecipeModal";
 import PremiumProducts from "../components/PremiumProducts";
+import Quiz from "../components/Quiz";
 import { Skeleton } from "../components/ui/skeleton";
-import api from "../lib/api";
+import { Button } from "../components/ui/button";
+import { Sparkles } from "lucide-react";
+import { filterRecipes, getStats, PREMIUM_PRODUCTS } from "../lib/recipesLocal";
 import { getFavorites, toggleFavorite } from "../lib/favorites";
 
 const DICAS_DIA = [
@@ -38,36 +41,41 @@ export default function Dashboard({ user, onLogout }) {
   const [loading, setLoading] = useState(true);
   const [favorites, setFavorites] = useState(getFavorites());
   const [showFavsOnly, setShowFavsOnly] = useState(false);
-  const [products, setProducts] = useState([]);
-  const [stats, setStats] = useState({ total: 0, gatos: 0 });
+  const products = PREMIUM_PRODUCTS;
+  const stats = useMemo(() => getStats(), []);
   const [openRecipe, setOpenRecipe] = useState(null);
+  const [showQuiz, setShowQuiz] = useState(true);
 
   const dica = useMemo(() => DICAS_DIA[new Date().getDate() % DICAS_DIA.length], []);
 
   useEffect(() => {
-    api.get("/premium-products").then(({ data }) => setProducts(data.products)).catch(() => {});
-    api.get("/stats").then(({ data }) => setStats(data)).catch(() => {});
-  }, []);
-
-  useEffect(() => {
     setLoading(true);
-    const params = {};
+    const args = {};
     // Na visão "Favoritas" ignoramos os filtros para mostrar TODAS as favoritas
     if (!showFavsOnly) {
-      if (filters.pet !== "todos") params.pet = filters.pet;
-      if (filters.dificuldade !== "todos") params.dificuldade = filters.dificuldade;
-      if (filters.refeicao !== "todos") params.refeicao = filters.refeicao;
-      if (busca.trim()) params.busca = busca.trim();
+      if (filters.pet !== "todos") args.pet = filters.pet;
+      if (filters.dificuldade !== "todos") args.dificuldade = filters.dificuldade;
+      if (filters.refeicao !== "todos") args.refeicao = filters.refeicao;
+      if (busca.trim()) args.busca = busca.trim();
     }
-
     const t = setTimeout(() => {
-      api.get("/recipes", { params })
-        .then(({ data }) => setRecipes(data.recipes))
-        .catch(() => setRecipes([]))
-        .finally(() => setLoading(false));
-    }, 250);
+      setRecipes(filterRecipes(args));
+      setLoading(false);
+    }, 150);
     return () => clearTimeout(t);
   }, [filters, busca, showFavsOnly]);
+
+  // Aplica os filtros vindos do quiz e leva o usuário ao catálogo
+  const applyQuizFilters = ({ pet, refeicao } = {}) => {
+    setShowFavsOnly(false);
+    setFilters((f) => ({
+      ...f,
+      pet: pet && pet !== "ambos" && pet !== "indefinido" ? pet : "todos",
+      refeicao: refeicao || "todos",
+      dificuldade: "todos",
+    }));
+    setShowQuiz(false);
+  };
 
   const handleToggleFav = (id) => setFavorites(toggleFavorite(id));
 
@@ -88,6 +96,13 @@ export default function Dashboard({ user, onLogout }) {
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <h1 className="font-display text-3xl sm:text-4xl font-bold text-[#1E2A24]">Olá, {user.nome}! 🐾</h1>
           <p className="mt-2 text-[#5C6B62] max-w-2xl">Explore receitas naturais pensadas para a saúde e o bem-estar do seu pet.</p>
+          <Button
+            data-testid="refazer-quiz-btn"
+            onClick={() => setShowQuiz(true)}
+            className="mt-4 rounded-full bg-[#D96B43] hover:bg-[#C25933] text-white gap-2 transition-colors"
+          >
+            <Sparkles className="h-4 w-4" /> Refazer quiz de receitas
+          </Button>
         </motion.div>
 
         <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -172,6 +187,13 @@ export default function Dashboard({ user, onLogout }) {
         onClose={() => setOpenRecipe(null)}
         favorite={openRecipe ? favorites.includes(openRecipe) : false}
         onToggleFav={handleToggleFav}
+      />
+
+      <Quiz
+        open={showQuiz}
+        onClose={() => setShowQuiz(false)}
+        onOpenRecipe={(id) => { setShowQuiz(false); setOpenRecipe(id); }}
+        onApplyFilters={applyQuizFilters}
       />
     </div>
   );

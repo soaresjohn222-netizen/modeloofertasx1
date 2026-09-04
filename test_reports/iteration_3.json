@@ -1,0 +1,29 @@
+{
+  "summary": "Frontend-only testing (mobile 390x844, localStorage cleared) of the static-recipes bug fix and the new post-login recommendation Quiz on the public preview URL. Verified: login by name, quiz auto-opens after login with correct pt-BR title, 'Pular por enquanto' closes quiz and dashboard shows 100 cards (results-count=100 for default 'Gatos'), filters cachorro=100 / todos=200, search 'frango'=46, full 4-question quiz flow with progress 'Pergunta X de 4', back button, result screen (name, image, species badge, time, difficulty, main ingredients, 3 CTAs), species compatibility (cachorro->badge Cachorro, gato->badge Gato, no cross-species), 'Ver receita' opens modal-recipe-detail with warnings-section, refazer-quiz-btn reopens quiz, 'Usar minhas últimas respostas' after close+reopen goes straight to result, localStorage prefs (pet_quiz_prefs) persisted, page reload keeps user logged in and recipes visible (100 cards), premium section 3 cards + 'Saiba mais' modal. No console errors, no backend/CORS dependency observed. 2 state-management bugs found in Quiz.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "Quiz.jsx", "issue": "Quiz state is not reset when closed via 'Ver receita' (onOpenRecipe) or 'Escolher outra receita' (onApplyFilters). Reopening with refazer-quiz-btn shows the STALE result screen (quiz-result) instead of the intro; quiz-start-btn/quiz-use-last-btn are unreachable until the modal is closed with X/skip. Reproduced: complete quiz -> Ver receita -> close recipe modal -> Refazer quiz -> result screen shown (intro_shown=0).", "selector": "[data-testid=\"quiz-modal\"] [data-testid=\"quiz-result\"]", "priority": "MEDIUM"},
+      {"component": "Quiz.jsx", "issue": "'Voltar ao início' (quiz-inicio-btn) returns to intro but 'Usar minhas últimas respostas' (quiz-use-last-btn) is NOT rendered and the primary button still reads 'Começar' instead of 'Refazer o quiz', because savedPrefs is memoized on [open] only and is not refreshed after finalize() writes pet_quiz_prefs. Works only after fully closing and reopening the modal.", "selector": "[data-testid=\"quiz-use-last-btn\"]", "priority": "MEDIUM"}
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Call reset() (or reset step/result on open) when the quiz is closed through onOpenRecipe and onApplyFilters so reopening always starts at the intro.",
+    "Refresh savedPrefs after finalize() (e.g. store prefs in state or read localStorage on step===0 render) so quiz-use-last-btn and the 'Refazer o quiz' label appear right after 'Voltar ao início'."
+  ],
+  "critical_code_review_comments": [
+    "Quiz.jsx: savedPrefs = useMemo(..., [open]) makes intro state stale within the same modal session; derive it from a state value updated in finalize().",
+    "Dashboard.jsx: showQuiz initial state is true, so the quiz also reopens on every page reload (not just after login) - acceptable per spec but worth confirming as intended UX."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "not tested (frontend-only request)", "frontend": "90%"},
+  "seed_data_creation": "None - login as 'Mariana' (name-only login), quiz prefs written to localStorage pet_quiz_prefs",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "test_credentials": "Name-only login (no /app/memory/test_credentials.md needed); used 'Mariana'",
+  "context_for_next_testing_agent": "All static recipe rendering (200 recipes, 100 per species), filters, search, recipe modal, premium products and the quiz happy paths pass on mobile 390x844. Remaining known issues are the two Quiz state-reset bugs listed above. Test flow: clear localStorage -> login -> quiz auto-opens.",
+  "rca_of_the_issue": "Original 'recipes not showing' bug is resolved: recipes now come from src/data/recipes.js via src/lib/recipesLocal.js with zero network calls (100/200 cards render immediately, no console errors). The two remaining defects are local component-state lifecycle issues in Quiz.jsx: closing paths that bypass handleClose() never call reset(), and savedPrefs is memoized only on the `open` prop."
+}

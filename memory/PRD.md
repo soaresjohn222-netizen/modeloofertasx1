@@ -37,6 +37,15 @@ Aplicação web (pt-BR) para tutores acessarem receitas naturais para pets, come
   - Cães: 50 receitas principais + 50 petiscos.
 - Avisos (Regras de Ouro + Alimentos Proibidos) atualizados com o conteúdo oficial dos PDFs.
 
+## Dados 100% no frontend (sem dependência de backend)
+- 2026-09: Receitas/avisos/produtos migrados para JSON estático no frontend (src/data/recipes.js) via src/lib/recipesLocal.js. Corrige "receitas não aparecem" e remove qualquer dependência de rede para exibir conteúdo.
+- Login por NOME apenas, sessão em localStorage (pet_user). Sem cookie/CORS.
+
+## Quiz de Recomendação (área logada)
+- 2026-09: Quiz abre após o login (src/components/Quiz.jsx). 4 perguntas (pet, objetivo, tempo, ingrediente) + intro + resultado. Acessível (1 pergunta/tela, botões grandes, progresso, Voltar/Continuar, foco visível, sem depender só de cor).
+- Recomendação (recommendRecipes) respeita a espécie (nunca cruza), pontua objetivo/tempo/ingrediente; se não houver match perfeito mostra a opção mais próxima. Só usa receitas existentes.
+- Persistência em localStorage (pet_quiz_prefs): "Usar minhas últimas respostas" e "Refazer quiz" (botão no dashboard). Pode pular/fechar a qualquer momento. Sem cobrança/cadastro/promessas médicas.
+
 ## Backlog / Próximos
 - P0: Substituir receitas de exemplo pelo conteúdo real dos PDFs (50+50 gatos).
 - P1: Auth real (backend + storage) para quando houver usuários pagantes/Hotmart.
